@@ -8,6 +8,11 @@ import { useState } from 'react';
 function App() {
   const [todoList, setToDoList] = useState([])
 
+  const deleteTodo = (id) => {
+      const newTodo = todoList.filter(item => item.id !== id)
+      setToDoList(newTodo)
+  }
+
 
 const addNewTodo = (inputValue) => {
   const newToDo = {
@@ -23,16 +28,27 @@ const randomInt = (min, max) => {
 
   return (
     <div className="todo-container">
+      
       <div className="todo-title">Todo List</div>
-      <TodoContent
-      addNewTodo = {addNewTodo}
-      />
-      <TodoList
-      todoList={todoList}
-      />
-      <div className='todo-image'>
+        <TodoContent
+         addNewTodo = {addNewTodo}
+        />
+
+      {
+        todoList.length > 0 ? <TodoList
+         todoList={todoList}
+         deleteTodo={deleteTodo}
+       /> 
+       : <div className='todo-image'>
         <img src={reactLogo} className='logo' alt="" />
       </div>
+      }
+      
+      
+      
+        
+     
+      
     </div>
 
     
