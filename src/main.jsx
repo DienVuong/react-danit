@@ -40,6 +40,8 @@ const router = createBrowserRouter([
     element: <RegisterPage />,
   },
 ]);
+
+// mongodb+srv://hoidanit:eyV7Sbt5i5PwMKQs@cluster0.gryxtgd.mongodb.net
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     {/* <App /> */}
