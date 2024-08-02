@@ -1,11 +1,14 @@
 import { Drawer, message, notification } from "antd";
 import { useState } from "react";
-import { handleUploadFile } from "../../services/api.service";
+import {
+  handleUploadFile,
+  updateUserAvatarAPI,
+} from "../../services/api.service";
 
 const UserDetail = (props) => {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
-  const { dataDetail, isDetailOpen, setIsDetailOpen } = props;
+  const { dataDetail, isDetailOpen, setIsDetailOpen, loadUser } = props;
   console.log(dataDetail);
 
   const handleOnchangeFile = (e) => {
@@ -29,10 +32,27 @@ const UserDetail = (props) => {
     console.log(resUpload);
     if (resUpload.data) {
       const newAvatar = resUpload.data.fileUploaded;
-      notification.success({
-        message: "Upload thanh cong",
-        description: "dddd",
-      });
+      const resUpdateAvatar = await updateUserAvatarAPI(
+        newAvatar,
+        dataDetail._id,
+        dataDetail.fullName,
+        dataDetail.phone
+      );
+      if (resUpdateAvatar) {
+        setIsDetailOpen(false);
+        setSelectedFile(null);
+        setPreview(null);
+        await loadUser();
+        notification.success({
+          message: "Upload thanh cong",
+          description: "dddd",
+        });
+      } else {
+        notification.error({
+          message: "upload that bai",
+          description: JSON.stringify(resUpload.message),
+        });
+      }
     } else {
       notification.error({
         message: "upload that bai",
